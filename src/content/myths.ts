@@ -1,0 +1,18 @@
+import type { Myth } from '../lib/types'
+
+export const MYTHS: Myth[] = [
+  { id: 1, category: 'Lifestyle', myth: "You shouldn't exercise during your period.", fact: 'Exercise is safe and often helps — it can ease cramps, lift mood and reduce bloating. Listen to your body and go gentler if you need to.', source: 'NHS' },
+  { id: 2, category: 'Culture', myth: 'Periods are impure or dirty.', fact: 'Menstrual blood is a normal body fluid, not “dirty”. Periods are a sign of a healthy reproductive system, and no one should be excluded from daily life because of them.', source: 'UNICEF' },
+  { id: 3, category: 'Body', myth: "You can't get pregnant during your period.", fact: 'It is less likely but possible — sperm can survive up to 5 days, and with a short cycle ovulation can happen soon after a period ends.', source: 'ACOG' },
+  { id: 4, category: 'Body', myth: 'PMS is not a real thing — it’s “just in your head.”', fact: 'PMS is real. Hormone changes in the luteal phase can cause physical and emotional symptoms in a large share of people who menstruate.', source: 'Office on Women’s Health' },
+  { id: 5, category: 'Hygiene', myth: 'You should not shower or wash your hair during your period.', fact: 'Bathing is safe and recommended. Warm water can even ease cramps. Good hygiene during periods helps prevent infection.', source: 'WHO' },
+  { id: 6, category: 'Body', myth: 'A regular 28-day cycle is “normal” for everyone.', fact: 'Only a minority of people have exactly 28-day cycles. Anywhere from 21 to 35 days is normal in adults, and teens often vary more.', source: 'ACOG' },
+  { id: 7, category: 'Products', myth: 'Using tampons affects virginity.', fact: 'Virginity is a social idea, not a medical one. Tampons and cups do not change it, and the hymen can stretch from many everyday activities.', source: 'Planned Parenthood' },
+  { id: 8, category: 'Body', myth: 'You lose a large amount of blood during a period.', fact: 'A typical period loses about 30–40 ml of blood in total — roughly 2–3 tablespoons. Soaking a pad every 1–2 hours is heavy and worth checking with a doctor.', source: 'NHS' },
+  { id: 9, category: 'Products', myth: 'Menstrual cups are unsafe or only for older people.', fact: 'Cups are safe for most people of any age once they learn how to use them. They come in different sizes, including smaller ones for teens.', source: 'The Lancet Public Health' },
+  { id: 10, category: 'Culture', myth: 'You should not enter the kitchen or touch pickles during a period.', fact: 'There is no scientific basis for this. Periods do not spoil food or affect anything a person touches.', source: 'UNICEF' },
+  { id: 11, category: 'Lifestyle', myth: 'Eating sour or cold food makes periods worse.', fact: 'No food has been shown to stop or worsen a period. A balanced diet with iron and water helps most.', source: 'NHS' },
+  { id: 12, category: 'Body', myth: 'Severe period pain is normal and you just have to bear it.', fact: 'Mild cramps are common, but pain that stops daily life can be a sign of conditions like endometriosis, which a doctor can diagnose and treat.', source: 'WHO' },
+  { id: 13, category: 'Body', myth: 'Periods sync up when people live together.', fact: 'Large studies have not found reliable evidence for “period syncing” — overlaps happen by chance because cycles vary.', source: 'Oxford study (Clue, 2016)' },
+  { id: 14, category: 'Culture', myth: 'Only women have periods.', fact: 'Most people who menstruate are women and girls, but some trans men and non-binary people also have periods. Inclusive language helps everyone get care.', source: 'UNFPA' },
+]

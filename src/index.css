@@ -1,0 +1,193 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* ── Tokens ─────────────────────────────────────────────── */
+:root {
+  --bg: #fff5f8;
+  --bg-2: #fdeef3;
+  --surface: #ffffff;
+  --surface-2: #fdf8fa;
+  --ink: #2a1420;
+  --ink-2: #5d4553;
+  --muted: #8a7480;
+  --line: #f3dce5;
+  --line-2: #ead0db;
+  --rose-soft: #fde4ec;
+  --lav-soft: #efe8ff;
+  --glass: rgba(255, 255, 255, 0.72);
+  --shadow-rose: 0 24px 60px -24px rgba(232, 80, 122, 0.28);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #170b12;
+  --bg-2: #1f0f18;
+  --surface: #241520;
+  --surface-2: #2b1926;
+  --ink: #fbeef3;
+  --ink-2: #dcc3cf;
+  --muted: #a88d9b;
+  --line: #3a2432;
+  --line-2: #4a2f40;
+  --rose-soft: #3b1626;
+  --lav-soft: #261b44;
+  --glass: rgba(36, 21, 32, 0.72);
+  --shadow-rose: 0 24px 60px -24px rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: 'Poppins', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-mono: 'DM Mono', ui-monospace, monospace;
+
+  --color-bg: var(--bg);
+  --color-bg-2: var(--bg-2);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-rose-soft: var(--rose-soft);
+  --color-lav-soft: var(--lav-soft);
+
+  --color-rose: #e8507a;
+  --color-rose-deep: #c93765;
+  --color-lav: #8b5cf6;
+  --color-lav-deep: #6d3fe0;
+  --color-peach: #ffb59e;
+  --color-plum: #2a1420;
+  --color-plum-2: #3d1d30;
+  --color-mist: #f3e8ff;
+
+  /* Cycle phases */
+  --color-ph-menstrual: #e8507a;
+  --color-ph-follicular: #f59e7b;
+  --color-ph-ovulation: #8b5cf6;
+  --color-ph-luteal: #c0659e;
+
+  --shadow-soft: 0 1px 2px rgba(42, 20, 32, 0.04), 0 12px 32px -12px rgba(232, 80, 122, 0.16);
+  --shadow-rose: var(--shadow-rose);
+  --radius-4xl: 2rem;
+}
+
+/* ── Base ───────────────────────────────────────────────── */
+html {
+  -webkit-tap-highlight-color: transparent;
+  scroll-behavior: smooth;
+}
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+::selection {
+  background: #e8507a33;
+}
+:focus-visible {
+  outline: 2.5px solid #e8507a;
+  outline-offset: 2px;
+  border-radius: 10px;
+}
+.accent {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+/* ── Aurora (login + hero ambience) ─────────────────────── */
+@keyframes drift-a {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1); }
+  50% { transform: translate3d(8%, -6%, 0) scale(1.12); }
+}
+@keyframes drift-b {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(1.05); }
+  50% { transform: translate3d(-10%, 8%, 0) scale(0.92); }
+}
+@keyframes drift-c {
+  0%, 100% { transform: translate3d(0, 0, 0) scale(0.95); }
+  50% { transform: translate3d(6%, 10%, 0) scale(1.1); }
+}
+.blob {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(60px);
+  will-change: transform;
+}
+.blob-a { animation: drift-a 18s ease-in-out infinite; }
+.blob-b { animation: drift-b 22s ease-in-out infinite; }
+.blob-c { animation: drift-c 26s ease-in-out infinite; }
+
+@keyframes petal-fall {
+  0% { transform: translate3d(0, -10vh, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 0.9; }
+  90% { opacity: 0.7; }
+  100% { transform: translate3d(var(--sway, 40px), 110vh, 0) rotate(var(--spin, 260deg)); opacity: 0; }
+}
+.petal {
+  position: absolute;
+  top: 0;
+  animation: petal-fall var(--dur, 16s) linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}
+.skeleton {
+  position: relative;
+  overflow: hidden;
+  background: var(--line);
+  border-radius: 12px;
+}
+.skeleton::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), transparent);
+  animation: shimmer 1.4s infinite;
+}
+.dark .skeleton::after {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.06), transparent);
+}
+
+/* Flip cards */
+.flip { perspective: 1200px; }
+.flip-inner {
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.flip[data-flipped='true'] .flip-inner { transform: rotateY(180deg); }
+.flip-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+.flip-back { transform: rotateY(180deg); }
+
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { scrollbar-width: none; }
+
+input[type='range'].pain {
+  accent-color: #e8507a;
+}
