@@ -45,6 +45,13 @@ const STRENGTH = [
 ]
 
 /** Only show the Google button once the provider is switched on in Supabase (set VITE_ENABLE_GOOGLE=true). */
+/** Turn Supabase's terse auth errors into something a visitor can act on. */
+function authMessage(msg: string) {
+  if (/rate limit|too many/i.test(msg)) return 'We’ve sent a lot of emails in the last hour. Please try again in a little while.'
+  if (/sending.*email|smtp/i.test(msg)) return 'We couldn’t send the email right now. Please try again shortly.'
+  return msg
+}
+
 const GOOGLE_ENABLED = import.meta.env.VITE_ENABLE_GOOGLE === 'true'
 
 function GoogleG() {
@@ -300,7 +307,7 @@ export default function AuthPage() {
           password,
           options: { data: { display_name: name.trim() }, emailRedirectTo: `${origin}/app` },
         })
-        if (error) return fail(/registered|exists/i.test(error.message) ? 'An account with this email already exists. Sign in instead.' : error.message)
+        if (error) return fail(/registered|exists/i.test(error.message) ? 'An account with this email already exists. Sign in instead.' : authMessage(error.message))
         if (data.session) setSuccess(true)
         else {
           pending.current = false
@@ -309,12 +316,12 @@ export default function AuthPage() {
         }
       } else if (mode === 'magic') {
         const { error } = await supabase.auth.signInWithOtp({ email: email.trim(), options: { emailRedirectTo: `${origin}${next}` } })
-        if (error) return fail(error.message)
+        if (error) return fail(authMessage(error.message))
         setSentKind('magic')
         setMode('sent')
       } else if (mode === 'forgot') {
         const { error } = await supabase.auth.resetPasswordForEmail(email.trim(), { redirectTo: `${origin}/reset-password` })
-        if (error) return fail(error.message)
+        if (error) return fail(authMessage(error.message))
         setSentKind('reset')
         setMode('sent')
       }
