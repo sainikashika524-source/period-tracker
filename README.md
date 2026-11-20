@@ -68,14 +68,24 @@ The same SQL is split into migrations in `supabase/migrations/` if you prefer th
 
 The seed (articles, myths, quiz) is generated from `src/content/*.ts` by `npm run gen:seed`. The app also bundles this content as a fallback, so the public pages work even before the database is ready.
 
-### 3. Auth settings (Supabase Dashboard → Authentication)
+### 3. Going live: let anyone sign up (Supabase Dashboard)
 
-- **URL Configuration:** set **Site URL** to your deployed URL. Add `http://localhost:5173/**` and `https://<your-vercel-domain>/**` to **Redirect URLs**.
-- **Email confirmations:** on by default, so new users get a confirmation email. For a live classroom demo you can switch off **Confirm email** under Sign In / Providers → Email.
-- **Google sign-in (optional):**
-  1. In Google Cloud Console → APIs & Services → Credentials, create an **OAuth client ID** (type: Web application).
-  2. Under **Authorized redirect URIs**, add `https://<project-ref>.supabase.co/auth/v1/callback`.
-  3. In Supabase → Authentication → Sign In / Providers → **Google**, turn it on and paste the Client ID and Client Secret.
+1. **Custom SMTP (required).** Supabase's built-in email only delivers to your own project team's addresses and is limited to a few emails per hour, so strangers would never get their confirmation email. Under **Authentication → Emails → SMTP Settings**, plug in a provider such as [Resend](https://resend.com), Brevo, Postmark or AWS SES, using a sender on a domain you own (e.g. `no-reply@yourdomain.com`).
+2. **URL Configuration** (Authentication → URL Configuration): set **Site URL** to your production URL (e.g. `https://periodwise.vercel.app`). Add `https://<your-domain>/**` and `http://localhost:5173/**` to **Redirect URLs**. If this still says `localhost`, confirmation links will be broken.
+3. **Confirm email:** keep it **on** (Sign In / Providers → Email) so people must own the address they sign up with.
+4. **Rate limits** (Authentication → Rate Limits): once custom SMTP is set, raise "emails sent per hour" to match expected signups (e.g. 100+).
+5. **Bot protection (recommended):** turn on CAPTCHA under Authentication → Attack Protection (Cloudflare Turnstile is free). This needs a small frontend change to pass the token; open an issue or ask for it.
+6. **Passwords:** under Sign In / Providers → Email, set minimum length to 8 and require letters + digits.
+7. **Run the latest SQL:** re-run [`supabase/setup.sql`](supabase/setup.sql) after pulling (it is idempotent) so the hardening migration is applied.
+8. **Google sign-in (optional):**
+   1. In Google Cloud Console → APIs & Services → Credentials, create an **OAuth client ID** (type: Web application).
+   2. Under **Authorized redirect URIs**, add `https://<project-ref>.supabase.co/auth/v1/callback`.
+   3. In Supabase → Authentication → Sign In / Providers → **Google**, turn it on and paste the Client ID and Client Secret.
+   4. Set `VITE_ENABLE_GOOGLE=true` in Vercel and redeploy. The Google button is hidden until then.
+
+**Vercel environment variables** (Project → Settings → Environment Variables, scope *Production*): `VITE_SUPABASE_URL`, `VITE_SUPABASE_PUBLISHABLE_KEY`, and optionally `VITE_ENABLE_GOOGLE`. They are baked in at build time, so **redeploy after changing them**.
+
+**Security headers** (CSP, HSTS, no framing, nosniff, referrer and permissions policy) are set in `vercel.json`.
 
 ### 4. Demo account (optional)
 
@@ -89,6 +99,8 @@ SUPABASE_SECRET_KEY=sb_secret_... npm run seed:demo
 ```
 
 Then sign in with **demo@periodwise.app / PeriodWise-demo-2026**. The secret key is read from the environment only for this local script.
+
+> On a public deployment, anyone who reads this README can log into the demo account and change its password. Seed it only on a dev project, or delete it under Authentication → Users before going live.
 
 ### 5. Deploy (Vercel)
 

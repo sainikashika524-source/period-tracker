@@ -44,6 +44,9 @@ const STRENGTH = [
   { label: 'Very strong', color: '#3fae74' },
 ]
 
+/** Only show the Google button once the provider is switched on in Supabase (set VITE_ENABLE_GOOGLE=true). */
+const GOOGLE_ENABLED = import.meta.env.VITE_ENABLE_GOOGLE === 'true'
+
 function GoogleG() {
   return (
     <svg width="18" height="18" viewBox="0 0 48 48" aria-hidden>
@@ -514,10 +517,12 @@ export default function AuthPage() {
                     <div className="my-6 flex items-center gap-3 text-[13px] text-muted">
                       <span className="h-px flex-1 bg-line-2" /> or continue with <span className="h-px flex-1 bg-line-2" />
                     </div>
-                    <div className="grid grid-cols-2 gap-3">
-                      <Button type="button" variant="secondary" onClick={google} loading={busy === 'google'} className="h-12">
-                        <GoogleG /> Google
-                      </Button>
+                    <div className={GOOGLE_ENABLED ? 'grid grid-cols-2 gap-3' : 'grid grid-cols-1 gap-3'}>
+                      {GOOGLE_ENABLED && (
+                        <Button type="button" variant="secondary" onClick={google} loading={busy === 'google'} className="h-12">
+                          <GoogleG /> Google
+                        </Button>
+                      )}
                       <Button type="button" variant="secondary" onClick={() => setMode('magic')} className="h-12">
                         <WandSparkles size={17} className="text-lav" /> Email link
                       </Button>
